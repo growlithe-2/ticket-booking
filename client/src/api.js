@@ -1,13 +1,16 @@
 import axios from 'axios';
 
-const API = axios.create({
-  baseURL: 'http://localhost:5000/api'
-});
+const API = axios.create({ baseURL: 'http://localhost:5000/api' });
 
-API.interceptors.request.use((req) => {
-  const token = localStorage.getItem('token');
-  if (token) req.headers.Authorization = `Bearer ${token}`;
-  return req;
-});
+export const trainService = {
+  getAll: () => API.get('/trains'),
+  search: (params) => API.get('/trains/search', { params }),
+  add: (data) => API.post('/trains', data),
+  delete: (id) => API.delete(`/trains/${id}`)
+};
 
-export default API;
+export const bookingService = {
+  create: (data) => API.post('/bookings', data),
+  getMyBookings: () => API.get('/bookings/my'),
+  cancel: (id) => API.put(`/bookings/cancel/${id}`)
+};
